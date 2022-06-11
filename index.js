@@ -2,6 +2,8 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: 1,
@@ -55,6 +57,14 @@ app.get("/info", (request, response) => {
     <br /><br />
     ${new Date()}
   `);
+});
+
+app.post("/api/persons", (request, response) => {
+  const person = { ...request.body, id: Math.ceil(999999 * Math.random()) };
+
+  persons = persons.concat(person);
+
+  response.json(person);
 });
 
 const PORT = 3001;
