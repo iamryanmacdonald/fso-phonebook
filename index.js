@@ -1,7 +1,9 @@
 const express = require("express");
+const morgan = require("morgan");
 
 const app = express();
 
+app.use(morgan("tiny"));
 app.use(express.json());
 
 let persons = [
@@ -71,9 +73,7 @@ app.post("/api/persons", (request, response) => {
   }
 
   if (persons.find((person) => person.name === body.name)) {
-    return response
-      .status(400)
-      .json({ error: "name must be unique" });
+    return response.status(400).json({ error: "name must be unique" });
   }
 
   const id =
