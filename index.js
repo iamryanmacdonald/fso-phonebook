@@ -60,7 +60,27 @@ app.get("/info", (request, response) => {
 });
 
 app.post("/api/persons", (request, response) => {
-  const person = { ...request.body, id: Math.ceil(999999 * Math.random()) };
+  const body = request.body;
+
+  if (!body.name) {
+    return response.status(400).json({ error: "name missing" });
+  }
+
+  if (!body.number) {
+    return response.status(400).json({ error: "number missing" });
+  }
+
+  if (persons.find((person) => person.name === body.name)) {
+    return response
+      .status(400)
+      .json({ error: "name must be unique" });
+  }
+
+  const id =
+    (persons.length > 0 ? Math.max(...persons.map((person) => person.id)) : 0) +
+    1;
+
+  const person = { ...body, id };
 
   persons = persons.concat(person);
 
