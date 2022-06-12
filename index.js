@@ -42,18 +42,16 @@ let persons = [
 ];
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
+  const id = request.params.id;
 
-  persons = persons.filter((person) => person.id !== id);
-
-  response.status(204).end();
+  Person.findByIdAndDelete(id).then(() => response.status(204).end());
 });
 
 app.get("/api/persons", (request, response) => {
   Person.find({}).then((persons) => response.json(persons));
 });
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
 
   Person.findById(id).then((person) => {
