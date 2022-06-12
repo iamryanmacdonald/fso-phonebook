@@ -46,12 +46,16 @@ app.get("/api/persons/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-app.get("/info", (request, response) => {
-  response.send(`
-    Phonebook has info for ${persons.length} people
-    <br /><br />
-    ${new Date()}
-  `);
+app.get("/info", (request, response, next) => {
+  Person.find({})
+    .then((persons) =>
+      response.send(`
+      Phonebook has info for ${persons.length} people
+      <br /><br />
+      ${new Date()}
+    `)
+    )
+    .catch((error) => next(error));
 });
 
 app.post("/api/persons", (request, response, next) => {
